@@ -47,9 +47,8 @@ ShellRoot {
             }
         }
 
-        function show(tab: string, subtab: string): void {
+        function show(): void {
             app.shown = true;
-            if (tab !== "") popup.gotoTab(tab, subtab);
         }
 
         function isShown(): string {

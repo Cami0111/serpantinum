@@ -71,7 +71,8 @@ if is_running; then
         exit 0
     fi
     write_tab
-    settings_ipc show "$TAB" "$SUBTAB"
+    settings_ipc show
+    [[ -n "$TAB" ]] && settings_ipc goto "$TAB" "$SUBTAB"
     focus_window
     exit 0
 fi
