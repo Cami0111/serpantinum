@@ -218,7 +218,7 @@ fi
 if [[ ( "$ACTION" == "open" || "$ACTION" == "toggle" ) && ( "$TARGET" == "settings" || "$TARGET" == "guide" ) ]]; then
     [[ "$TARGET" == "guide" ]] && echo "qs_manager: 'guide' is deprecated, use 'settings' instead" >&2
     log_widget_launch "settings" &
-    exec bash "$SCRIPT_DIR/settings.sh" "$ACTION" "$SUBTARGET"
+    send_qs_ipc "$ACTION" "settings" "$SUBTARGET"; exit 0
 fi
 
 if [[ "$ACTION" == "open" || "$ACTION" == "toggle" ]]; then

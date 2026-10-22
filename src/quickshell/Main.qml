@@ -106,8 +106,8 @@ PanelWindow {
                 let settingsAction = cmd === "close" ? "close" : (cmd === "open" ? "open" : "toggle");
                 let settingsTab = (cmd === "settings" || cmd === "guide") ? targetWidget : arg;
                 if (settingsTab === "settings" || settingsTab === "guide") settingsTab = "";
-                Quickshell.execDetached(["bash", Caching.serpantinumDir + "/scripts/settings.sh", settingsAction, settingsTab]);
-                return;
+                if (settingsAction === "close") { if (masterWindow.targetActive === "guide") switchWidget("hidden", ""); return; }
+                cmd = settingsAction; targetWidget = "guide"; arg = settingsTab;
             }
 
             if (cmd === "launcher" || targetWidget === "launcher") {
@@ -232,7 +232,7 @@ PanelWindow {
     readonly property bool screenReady: masterWindow.width >= 100 && masterWindow.height >= 100
     readonly property bool isCurrentDraggable: {
         let t = getLayout(masterWindow.currentActive);
-        return Boolean(t && t.draggable);
+        return Boolean(t && t.draggable) || masterWindow.currentActive === "guide";
     }
 
     Item {
@@ -352,6 +352,8 @@ PanelWindow {
         reportWidgetState();
         Qt.callLater(function() {
             if (masterWindow.currentActive === "hidden") {
+                let t = masterWindow.getLayout("guide");
+                if (t) masterWindow.ensureWidgetItem("guide", t);
                 let w = masterWindow.getLayout("wallpaper");
                 if (w) masterWindow.ensureWidgetItem("wallpaper", w);
             }
@@ -441,7 +443,7 @@ PanelWindow {
         if (!result) return null;
 
         let scale = masterWindow.globalUiScale || 1.0;
-        let isFixed = (name === "wallpaper" || name === "notifications" || name === "system" || name === "hidden");
+        let isFixed = (name === "guide" || name === "wallpaper" || name === "notifications" || name === "system" || name === "hidden");
 
         if (effHidden && !isFixed) {
             let offsetAdjustment = Math.round(46 * scale);
@@ -634,7 +636,7 @@ PanelWindow {
         let gen = masterWindow.switchGeneration;
         masterWindow.targetActive = newWidget;
 
-        masterWindow.userMoved = false;
+        if (newWidget !== "guide") masterWindow.userMoved = false;
 
         if (delayedClear.running) {
             delayedClear.stop();
