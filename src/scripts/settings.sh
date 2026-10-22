@@ -66,12 +66,11 @@ if [[ "$ACTION" == "close" ]]; then
 fi
 
 if is_running; then
-    if [[ "$ACTION" == "toggle" ]] && [[ "$(quickshell -p "$SETTINGS_QML" ipc call settings isShown 2>/dev/null)" == "yes" ]]; then
+    if [[ "$ACTION" == "toggle" ]]; then
         settings_ipc close
         exit 0
     fi
     write_tab
-    settings_ipc show
     [[ -n "$TAB" ]] && settings_ipc goto "$TAB" "$SUBTAB"
     focus_window
     exit 0
