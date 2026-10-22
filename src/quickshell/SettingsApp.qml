@@ -16,6 +16,8 @@ ShellRoot {
         return (isNaN(v) || v <= 0) ? 1.0 : v;
     }
 
+    property bool shown: Quickshell.env("SERPANTINUM_SETTINGS_HIDDEN") !== "1"
+
     readonly property int toplevelCount: ToplevelManager.toplevels.values.length
 
     Connections {
@@ -45,6 +47,15 @@ ShellRoot {
             }
         }
 
+        function show(tab: string, subtab: string): void {
+            app.shown = true;
+            if (tab !== "") popup.gotoTab(tab, subtab);
+        }
+
+        function isShown(): string {
+            return app.shown ? "yes" : "no";
+        }
+
         function ping(): string {
             return "ok";
         }
@@ -60,16 +71,14 @@ ShellRoot {
         WlrLayershell.layer: WlrLayer.Overlay
         WlrLayershell.namespace: "serpantinum-settings"
         WlrLayershell.keyboardFocus: WlrKeyboardFocus.Exclusive
-        visible: true
-
-        onVisibleChanged: if (!visible) Qt.quit()
+        visible: app.shown
 
         GuidePopup {
             id: popup
             anchors.fill: parent
             standalone: true
             visible: window.visible
-            onExitRequested: Qt.quit()
+            onExitRequested: app.shown = false
         }
     }
 }
