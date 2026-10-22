@@ -50,14 +50,16 @@ ShellRoot {
         }
     }
 
-    FloatingWindow {
+    PanelWindow {
         id: window
 
-        title: I18n.t("widgets.guide.name", "Settings")
         color: "transparent"
         implicitWidth: Math.round(1200 * app.uiScale)
         implicitHeight: Math.round(750 * app.uiScale)
-        minimumSize: Qt.size(Math.round(480 * app.uiScale), Math.round(400 * app.uiScale))
+        exclusionMode: ExclusionMode.Ignore
+        WlrLayershell.layer: WlrLayer.Overlay
+        WlrLayershell.namespace: "serpantinum-settings"
+        WlrLayershell.keyboardFocus: WlrKeyboardFocus.OnDemand
         visible: true
 
         onVisibleChanged: if (!visible) Qt.quit()
