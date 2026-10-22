@@ -59,7 +59,7 @@ ShellRoot {
         exclusionMode: ExclusionMode.Ignore
         WlrLayershell.layer: WlrLayer.Overlay
         WlrLayershell.namespace: "serpantinum-settings"
-        WlrLayershell.keyboardFocus: WlrKeyboardFocus.OnDemand
+        WlrLayershell.keyboardFocus: WlrKeyboardFocus.Exclusive
         visible: true
 
         onVisibleChanged: if (!visible) Qt.quit()

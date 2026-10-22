@@ -878,7 +878,7 @@ Item {
                 }
             } else if (root.focusInContent()) {
                 root.forceActiveFocus();
-            } else if (!root.standalone) {
+            } else {
                 root.closePopup();
             }
             event.accepted = true;
@@ -1020,7 +1020,7 @@ Item {
 
         Rectangle {
             anchors.fill: parent
-            radius: root.standalone ? 0 : ThemeBackend.clampedBorderRadius
+            radius: ThemeBackend.clampedBorderRadius
             color: Qt.alpha(ThemeBackend.base, ThemeBackend.elementOpacity)
 
             WallpaperBlur {
